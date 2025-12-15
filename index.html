@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestor de Tareas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="diseño.css">
+</head>
+<body>
+
+<header class="app-header">
+  <h1>Gestión de Tareas 📖🎓</h1>
+</header>
+
+<main class="container">
+
+  <!-- FORMULARIO -->
+  <section class="form-section">
+    <h2>Nueva / Editar tarea</h2>
+
+    <form id="taskForm">
+      <input type="hidden" id="taskId">
+
+      <label>Fecha de entrega</label>
+      <input type="date" id="fecha" required>
+
+      <label>Materia</label>
+      <input type="text" id="materia" required>
+
+      <label>Prioridad</label>
+      <select id="prioridad" required>
+        <option value="High">Alta</option>
+        <option value="Medium">Media</option>
+        <option value="Low">Baja</option>
+      </select>
+
+      <label>Título</label>
+      <input type="text" id="titulo" required>
+
+      <label>Descripción</label>
+      <textarea id="descripcion" rows="4" required></textarea>
+
+      <button type="submit">Guardar tarea</button>
+    </form>
+  </section>
+
+  <!-- LISTADO -->
+  <section class="tasks-section">
+
+    <div class="filters">
+      <select id="filterPrioridad">
+        <option value="">Todas las prioridades</option>
+        <option value="High">Alta</option>
+        <option value="Medium">Media</option>
+        <option value="Low">Baja</option>
+      </select>
+
+      <select id="orderFecha">
+        <option value="asc">Fecha ↑</option>
+        <option value="desc">Fecha ↓</option>
+      </select>
+    </div>
+
+    <div id="tasksContainer" class="tasks-grid"></div>
+
+  </section>
+
+</main>
+
+<script src="sistema.js"></script>
+</body>
+</html>

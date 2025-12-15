@@ -1,46 +1,32 @@
-let tareas = [
-  {
-    id: 1,
-    fecha: "2025-06-22",
-    materia: "UX Design",
-    prioridad: "High",
-    titulo: "User Flow",
-    descripcion: "Diseñar el flujo de usuarios del dashboard"
-  },
-  {
-    id: 2,
-    fecha: "2025-06-23",
-    materia: "Development",
-    prioridad: "Medium",
-    titulo: "Website Design",
-    descripcion: "Crear el diseño general del sitio web"
-  }
-];
+let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+
+const form = document.getElementById("taskForm");
+const taskIdInput = document.getElementById("taskId");
+const contenedor = document.getElementById("tasksContainer");
+const filtroPrioridad = document.getElementById("filterPrioridad");
+const ordenFecha = document.getElementById("orderFecha");
 
 function guardarEnLocalStorage() {
   localStorage.setItem("tareas", JSON.stringify(tareas));
 }
 
-const form = document.getElementById("taskForm");
-const taskIdInput = document.getElementById("taskId");
-
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", e => {
   e.preventDefault();
 
   const tarea = {
     id: taskIdInput.value || Date.now(),
-    fecha: document.getElementById("fecha").value,
-    materia: document.getElementById("materia").value,
-    prioridad: document.getElementById("prioridad").value,
-    titulo: document.getElementById("titulo").value,
-    descripcion: document.getElementById("descripcion").value
+    fecha: fecha.value,
+    materia: materia.value,
+    prioridad: prioridad.value,
+    titulo: titulo.value,
+    descripcion: descripcion.value
   };
 
   if (taskIdInput.value === "") {
     tareas.push(tarea);
   } else {
     const index = tareas.findIndex(t => t.id == tarea.id);
-    tareas[index] = tarea; 
+    tareas[index] = tarea;
   }
 
   guardarEnLocalStorage();
@@ -49,80 +35,86 @@ form.addEventListener("submit", function (e) {
   mostrarTareas();
 });
 
-const contenedor = document.getElementById("tasksContainer");
+filtroPrioridad.addEventListener("change", mostrarTareas);
+ordenFecha.addEventListener("change", mostrarTareas);
 
 function mostrarTareas() {
   contenedor.innerHTML = "";
-  tareas.forEach(tarea => {
+
+  let lista = [...tareas];
+
+  if (filtroPrioridad.value) {
+    lista = lista.filter(t => t.prioridad === filtroPrioridad.value);
+  }
+
+  lista.sort((a, b) =>
+    ordenFecha.value === "asc"
+      ? new Date(a.fecha) - new Date(b.fecha)
+      : new Date(b.fecha) - new Date(a.fecha)
+  );
+
+  lista.forEach(tarea => {
     const card = document.createElement("div");
-    card.classList.add("task-card");
+    card.className = "task-card";
 
     card.innerHTML = `
-      ...
+      <span class="badge ${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
+
+      <div class="task-meta">
+        <span class="meta-item">${tarea.fecha}</span>
+        <span class="meta-item">${tarea.materia}</span>
+      </div>
+
+      <h3>${tarea.titulo}</h3>
+
+      <p class="task-desc" id="desc-${tarea.id}">
+        ${tarea.descripcion}
+      </p>
+
+      <button class="ver-mas" onclick="toggleDescripcion(${tarea.id})">
+        Ver menos
+      </button>
+
+      <div class="task-footer">
+        <div class="actions">
+          <button onclick="editarTarea(${tarea.id})">✏️</button>
+          <button onclick="eliminarTarea(${tarea.id})">🗑️</button>
+        </div>
+      </div>
     `;
 
     contenedor.appendChild(card);
   });
-
-
-  tareas.forEach(tarea => {
-    const card = document.createElement("div");
-    card.classList.add("task-card");
-
-    card.innerHTML = `
-  <div class="task-header">
-    <span class="badge ${tarea.prioridad.toLowerCase()}">
-      ${tarea.prioridad}
-    </span>
-  </div>
-
-  <div class="task-meta">
-    <span class="meta-item">${tarea.fecha}</span>
-    <span class="meta-item">${tarea.materia}</span>
-  </div>
-
-  <h3>${tarea.titulo}</h3>
-
-  <p class="task-desc" id="desc-${tarea.id}">
-    ${tarea.descripcion}
-  </p>
-
-  <button class="ver-mas" onclick="toggleDescripcion(${tarea.id})">
-    Ver más
-  </button>
-
-  <div class="task-footer">
-    <div class="actions">
-      <button onclick="editarTarea(${tarea.id})">✏️</button>
-      <button onclick="eliminarTarea(${tarea.id})">🗑️</button>
-    </div>
-  </div>
-`;
-
-    contenedor.appendChild(card);
-  });
 }
 
-mostrarTareas();
+function toggleDescripcion(id) {
+  const desc = document.getElementById(`desc-${id}`);
+  const btn = desc.nextElementSibling;
+
+  desc.classList.toggle("collapsed");
+
+  btn.textContent = desc.classList.contains("collapsed")
+    ? "Ver más"
+    : "Ver menos";
+}
 
 function editarTarea(id) {
   const tarea = tareas.find(t => t.id === id);
 
-  document.getElementById("fecha").value = tarea.fecha;
-  document.getElementById("materia").value = tarea.materia;
-  document.getElementById("prioridad").value = tarea.prioridad;
-  document.getElementById("titulo").value = tarea.titulo;
-  document.getElementById("descripcion").value = tarea.descripcion;
-
-  document.getElementById("taskId").value = tarea.id;
+  fecha.value = tarea.fecha;
+  materia.value = tarea.materia;
+  prioridad.value = tarea.prioridad;
+  titulo.value = tarea.titulo;
+  descripcion.value = tarea.descripcion;
+  taskIdInput.value = tarea.id;
 }
 
 function eliminarTarea(id) {
-  const confirmar = confirm("¿Seguro que deseas eliminar esta tarea?");
-
-  if (confirmar) {
+  if (confirm("¿Eliminar esta tarea?")) {
     tareas = tareas.filter(t => t.id !== id);
     guardarEnLocalStorage();
     mostrarTareas();
   }
 }
+
+mostrarTareas();
