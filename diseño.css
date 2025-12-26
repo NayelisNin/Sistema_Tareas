@@ -1,10 +1,10 @@
 :root {
-  --bg: #f5f7fb;
+  --bg: #cedcf9;
   --card: #ffffff;
   --primary: #4f46e5;
   --primary-dark: #4338ca;
-  --text-main: #111827;
-  --text-muted: #6b7280;
+  --text-main: #0b2e79;
+  --text-muted: #b227c5;
 
   --high: #fee2e2;
   --high-text: #dc2626;
@@ -27,14 +27,11 @@ body {
   color: var(--text-main);
 }
 
-/* HEADER */
 .app-header {
-  background: #fff;
+  background: #8aa9e7;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #e5e7eb;
 }
 
-/* LAYOUT */
 .container {
   max-width: 1200px;
   margin: auto;
@@ -44,12 +41,11 @@ body {
   gap: 2rem;
 }
 
-/* FORMULARIO */
 .form-section {
   background: #fff;
   padding: 1.5rem;
   border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,.05);
+  box-shadow: 5px 15px 25px rgba(79, 7, 101, 0.342);
 }
 
 #taskForm {
@@ -58,7 +54,7 @@ body {
 }
 
 #taskForm label {
-  font-size: .75rem;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
@@ -79,11 +75,9 @@ body {
   cursor: pointer;
 }
 
-/* FILTROS */
 .filters {
   display: flex;
   gap: .5rem;
-  margin-bottom: 1rem;
 }
 
 .filters select {
@@ -92,7 +86,6 @@ body {
   border: 1px solid #d1d5db;
 }
 
-/* TARJETAS */
 .tasks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -103,18 +96,16 @@ body {
   background: var(--card);
   border-radius: 14px;
   padding: 1rem;
-  box-shadow: 0 10px 25px rgba(0,0,0,.05);
-}
-
-.task-header {
-  margin-bottom: .5rem;
+  box-shadow: 5px 15px 25px rgba(79, 7, 101, 0.342);
 }
 
 .badge {
-  padding: .25rem .6rem;
+  display: inline-block;
+  padding: 3px 10px;
   border-radius: 999px;
-  font-size: .7rem;
+  font-size: 15px;
   font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .high { background: var(--high); color: var(--high-text); }
@@ -137,15 +128,12 @@ body {
 .task-desc {
   font-size: .8rem;
   color: var(--text-muted);
-  line-height: 1.4;
-  max-height: 1000px; /* visible por defecto */
+  max-height: 1000px; 
   overflow: hidden;
-  transition: max-height .3s ease;
 }
 
-/* estado colapsado */
 .task-desc.collapsed {
-  max-height: 3.6em; /* 2–3 líneas */
+  max-height: 3.6em; 
 }
 
 .task-desc.expanded {
@@ -161,7 +149,6 @@ body {
   padding: 0;
 }
 
-/* FOOTER */
 .task-footer {
   display: flex;
   justify-content: flex-end;
@@ -176,10 +163,8 @@ body {
   margin-left: .3rem;
 }
 
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .container {
     grid-template-columns: 1fr;
   }
 }
-

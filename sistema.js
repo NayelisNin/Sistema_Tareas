@@ -5,6 +5,18 @@ const taskIdInput = document.getElementById("taskId");
 const contenedor = document.getElementById("tasksContainer");
 const filtroPrioridad = document.getElementById("filterPrioridad");
 const ordenFecha = document.getElementById("orderFecha");
+const tituloInput = document.getElementById("titulo");
+const descripcionInput = document.getElementById("descripcion");
+const fechaInput = document.getElementById("fecha");
+const materiaInput = document.getElementById("materia");
+const prioridadInput = document.getElementById("prioridad");
+
+const prioridadTexto = {
+  High: "Alta",
+  Medium: "Media",
+  Low: "Baja"
+};
+
 
 function guardarEnLocalStorage() {
   localStorage.setItem("tareas", JSON.stringify(tareas));
@@ -12,9 +24,11 @@ function guardarEnLocalStorage() {
 
 form.addEventListener("submit", e => {
   e.preventDefault();
+  
 
+const id = Number(taskIdInput.value);
   const tarea = {
-    id: taskIdInput.value || Date.now(),
+    id: id ? id : Date.now(),
     fecha: fecha.value,
     materia: materia.value,
     prioridad: prioridad.value,
@@ -22,11 +36,10 @@ form.addEventListener("submit", e => {
     descripcion: descripcion.value
   };
 
-  if (taskIdInput.value === "") {
-    tareas.push(tarea);
+   if (id) {
+    tareas = tareas.map(t => t.id == id ? tarea : t);
   } else {
-    const index = tareas.findIndex(t => t.id == tarea.id);
-    tareas[index] = tarea;
+    tareas.push(tarea);
   }
 
   guardarEnLocalStorage();
@@ -41,24 +54,30 @@ ordenFecha.addEventListener("change", mostrarTareas);
 function mostrarTareas() {
   contenedor.innerHTML = "";
 
-  let lista = [...tareas];
+  let lista = tareas.slice();
 
-  if (filtroPrioridad.value) {
+  if (filtroPrioridad.value !== "") {
     lista = lista.filter(t => t.prioridad === filtroPrioridad.value);
   }
 
-  lista.sort((a, b) =>
-    ordenFecha.value === "asc"
-      ? new Date(a.fecha) - new Date(b.fecha)
-      : new Date(b.fecha) - new Date(a.fecha)
-  );
+  lista.sort(function (a, b) {
+    if (ordenFecha.value === "asc") {
+      return new Date(a.fecha) - new Date(b.fecha);
+    } else {
+      return new Date(b.fecha) - new Date(a.fecha);
+    }
+  });
 
-  lista.forEach(tarea => {
+  for (let i = 0; i < lista.length; i++) {
+    const tarea = lista[i];
+
     const card = document.createElement("div");
     card.className = "task-card";
 
     card.innerHTML = `
-      <span class="badge ${tarea.prioridad.toLowerCase()}">${tarea.prioridad}</span>
+<span class="badge ${tarea.prioridad.toLowerCase()}">
+  ${prioridadTexto[tarea.prioridad]}
+</span>
 
       <div class="task-meta">
         <span class="meta-item">${tarea.fecha}</span>
@@ -67,7 +86,7 @@ function mostrarTareas() {
 
       <h3>${tarea.titulo}</h3>
 
-      <p class="task-desc" id="desc-${tarea.id}">
+      <p class="task-desc collapsed" id="desc-${tarea.id}">
         ${tarea.descripcion}
       </p>
 
@@ -84,30 +103,35 @@ function mostrarTareas() {
     `;
 
     contenedor.appendChild(card);
-  });
+  };
 }
 
 function toggleDescripcion(id) {
-  const desc = document.getElementById(`desc-${id}`);
+  const desc = document.getElementById("desc-" + id);
   const btn = desc.nextElementSibling;
 
-  desc.classList.toggle("collapsed");
-
-  btn.textContent = desc.classList.contains("collapsed")
-    ? "Ver más"
-    : "Ver menos";
+  if (desc.classList.contains("collapsed")) {
+    desc.classList.remove("collapsed");
+    btn.textContent = "Ver menos";
+  } else {
+    desc.classList.add("collapsed");
+    btn.textContent = "Ver más";
+  }
 }
+
 
 function editarTarea(id) {
-  const tarea = tareas.find(t => t.id === id);
+  const tarea = tareas.find(t => t.id == id);
+  if (!tarea) return;
 
-  fecha.value = tarea.fecha;
-  materia.value = tarea.materia;
-  prioridad.value = tarea.prioridad;
-  titulo.value = tarea.titulo;
-  descripcion.value = tarea.descripcion;
+  fechaInput.value = tarea.fecha;
+  materiaInput.value = tarea.materia;
+  prioridadInput.value = tarea.prioridad;
+  tituloInput.value = tarea.titulo;
+  descripcionInput.value = tarea.descripcion;
   taskIdInput.value = tarea.id;
 }
+
 
 function eliminarTarea(id) {
   if (confirm("¿Eliminar esta tarea?")) {

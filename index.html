@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<<<<<<< HEAD
   <meta charset="UTF-8">
   <title>Gestor de Tareas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +9,13 @@
 <body>
 
 <header class="app-header">
-  <h1>Gestión de Tareas 📖🎓</h1>
+  <h1>Tareas</h1>
 </header>
 
 <main class="container">
 
-  <!-- FORMULARIO -->
   <section class="form-section">
-    <h2>Nueva / Editar tarea</h2>
+    <h2>Nueva / Editar</h2>
 
     <form id="taskForm">
       <input type="hidden" id="taskId">
@@ -41,11 +39,10 @@
       <label>Descripción</label>
       <textarea id="descripcion" rows="4" required></textarea>
 
-      <button type="submit">Guardar tarea</button>
+      <button type="submit">Guardar</button>
     </form>
   </section>
 
-  <!-- LISTADO -->
   <section class="tasks-section">
 
     <div class="filters">
@@ -69,78 +66,5 @@
 </main>
 
 <script src="sistema.js"></script>
-=======
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="diseño.css">
-
-    <title>Gestor de Tareas</title>
-</head>
-<body>
-
-    <header class="app-header">
-    <h1>Gestión de Tareas📖🎓</h1>
-  </header>
-
-  <main class="container">
-
-    <section class="form-section">
-      <h2>Nueva / Editar tarea</h2>
-
-      <form id="taskForm">
-        <input type="hidden" id="taskId">
-
-        <label>Fecha de entrega</label>
-        <input type="date" id="fecha" required>
-
-        <label>Materia / Área</label>
-        <input type="text" id="materia" placeholder="Ej: UX Design" required>
-
-        <label>Prioridad</label>
-        <select id="prioridad" required>
-          <option value="High">Alta</option>
-          <option value="Medium">Media</option>
-          <option value="Low">Baja</option>
-        </select>
-
-        <label>Título</label>
-        <input type="text" id="titulo" placeholder="Título de la tarea" required>
-
-        <label>Descripción</label>
-        <textarea id="descripcion" rows="4" required></textarea>
-
-        <button type="submit">Guardar tarea</button>
-      </form>
-    </section>
-
-    <section class="tasks-section">
-
-      <div class="filters">
-        <select id="filterPrioridad">
-          <option value="">Todas las prioridades</option>
-          <option value="High">Alta</option>
-          <option value="Medium">Media</option>
-          <option value="Low">Baja</option>
-        </select>
-
-        <select id="orderFecha">
-          <option value="asc">Fecha ↑</option>
-          <option value="desc">Fecha ↓</option>
-        </select>
-      </div>
-
-      <div id="tasksContainer" class="tasks-grid">
-      </div>
-
-    </section>
-
-  </main>
-
-
-<script src="sistema.js"></script>
-
->>>>>>> 4414502f35125674c09685625fb1725ce9a7d07d
 </body>
 </html>
