@@ -125,19 +125,28 @@ body {
   border-radius: 8px;
 }
 
-.task-desc {
-  font-size: .8rem;
-  color: var(--text-muted);
-  max-height: 1000px; 
+.task {
+  max-width: 100%;
   overflow: hidden;
 }
 
+.task-desc {
+  color: #b227c5;
+  margin-top: 6px;
+  line-height: 1.5;
+  overflow: hidden;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
 .task-desc.collapsed {
-  max-height: 3.6em; 
+  max-height: 42px; 
 }
 
 .task-desc.expanded {
-  max-height: 1000px;
+  max-height: 260px;
 }
 
 .ver-mas {
